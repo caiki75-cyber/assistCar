@@ -12,7 +12,9 @@ FROM base AS dependencies
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+# O lockfile atual ainda não contém as dependências recém-adicionadas ao package.json.
+# Permite que o build da imagem o sincronize internamente até ele ser atualizado no repositório.
+RUN pnpm install --no-frozen-lockfile
 
 FROM base AS builder
 

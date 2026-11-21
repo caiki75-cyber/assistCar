@@ -1,0 +1,21 @@
+# Dependências e artefatos gerados localmente
+node_modules
+.next
+
+# Controle de versão e arquivos do editor
+.git
+.gitignore
+.vscode
+.idea
+
+# Variáveis de ambiente e credenciais
+.env
+.env.*
+!.env.example
+
+# Arquivos temporários e documentação não necessária no build
+.DS_Store
+*.log
+DOCUMENTACAO.md
+CLAUDE.md
+AGENTS.md

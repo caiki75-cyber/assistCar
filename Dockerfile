@@ -11,7 +11,7 @@ FROM base AS dependencies
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 # O lockfile atual ainda não contém as dependências recém-adicionadas ao package.json.
 # Permite que o build da imagem o sincronize internamente até ele ser atualizado no repositório.
 RUN pnpm install --no-frozen-lockfile
@@ -24,6 +24,9 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
+# O Prisma precisa de uma URL sintaticamente válida para gerar o client.
+# A conexão real é fornecida pelo ambiente de produção durante a execução.
+ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/assistcar"
 
 RUN pnpm build
 

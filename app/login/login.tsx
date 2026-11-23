@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 type FormMode = 'login' | 'register'
+type AccountRole = 'USER' | 'WORKER'
 
 interface FormError {
   message: string
@@ -13,6 +14,8 @@ interface FormError {
 export default function Login() {
   const router = useRouter()
   const [mode, setMode] = useState<FormMode>('login')
+  // Tipo de conta escolhido no primeiro cadastro (null = ainda não escolheu)
+  const [role, setRole] = useState<AccountRole | null>(null)
   const [loading, setLoading] = useState(false)
   const [feedback, setFeedback] = useState<FormError | null>(null)
 
@@ -29,6 +32,7 @@ export default function Login() {
 
   function switchToRegister(prefillEmail?: string) {
     setMode('register')
+    setRole(null)
     setFeedback(null)
     setPassword('')
     setPasswordConfirmation('')
@@ -68,7 +72,8 @@ export default function Login() {
       const json = await res.json()
 
       if (res.ok) {
-        // Login com sucesso — redirecionar para home
+        // Login com sucesso — guardar usuário logado e redirecionar para home
+        localStorage.setItem('assistcar:user', JSON.stringify(json.user))
         router.push('/')
         return
       }
@@ -135,6 +140,7 @@ export default function Login() {
           email: email.trim(),
           phone: phone.trim(),
           password,
+          role: role ?? 'USER',
         }),
       })
 
@@ -191,9 +197,23 @@ export default function Login() {
           <div className="login-heading">
             <p className="eyebrow">{mode === 'register' ? 'Comece agora' : 'Bem-vindo de volta'}</p>
             <h1>{mode === 'register' ? 'Crie sua conta' : 'Entre na sua conta'}</h1>
-            <p className="muted">{mode === 'register' ? 'Preencha seus dados para fazer parte da AssistCar.' : 'Acesse sua assistência veicular de forma rápida e segura.'}</p>
+            <p className="muted">{mode === 'register' ? (role === null ? 'Como você pretende usar a AssistCar?' : role === 'WORKER' ? 'Cadastro de provedor de serviço.' : 'Preencha seus dados para fazer parte da AssistCar.') : 'Acesse sua assistência veicular de forma rápida e segura.'}</p>
           </div>
 
+          {mode === 'register' && role === null ? (
+            <div className="role-choice">
+              <button type="button" className="role-option" onClick={() => setRole('USER')}>
+                <span>🚗</span>
+                <strong>Sou usuário</strong>
+                <small>Preciso de assistência para o meu veículo</small>
+              </button>
+              <button type="button" className="role-option" onClick={() => setRole('WORKER')}>
+                <span>🔧</span>
+                <strong>Sou provedor de serviço</strong>
+                <small>Quero atender clientes e oferecer meus serviços</small>
+              </button>
+            </div>
+          ) : (<>
           {feedback && (
             <div className={`login-feedback ${feedback.type}`}>
               <span>{feedback.type === 'error' ? '✕' : '✓'}</span>
@@ -290,6 +310,8 @@ export default function Login() {
               {!loading && <span>›</span>}
             </button>
           </form>
+
+          </>)}
 
           {mode === 'login' && (
             <>

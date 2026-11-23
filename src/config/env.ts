@@ -20,4 +20,15 @@ function requireEnv(name: string): string {
 
 export const env = {
   DATABASE_URL: requireEnv("DATABASE_URL"),
+  COOKIE_SECRET: requireEnv("COOKIE_SECRET"),
 } as const;
+
+/**
+ * Chave secreta lida de process.env (.env.local), usada para assinar o cookie.
+ */
+export const secure = process.env.COOKIE_SECRET as string;
+
+/**
+ * Opções do cookie de sessão. httpOnly impede o acesso via JavaScript no navegador.
+ */
+export const httpOnly = true;

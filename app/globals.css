@@ -53,3 +53,9 @@ button { font: inherit; cursor: pointer; border: 0; }
 @media (max-width: 700px) { .app-shell { padding: 0; display: block; }.phone-frame { width: 100%; min-height: 100vh; border: 0; border-radius: 0; box-shadow: none; }.screen { min-height: calc(100vh - 28px); }.desktop-note { display: none; } }
 @media (min-width: 701px) { .phone-frame { transform: scale(.86); } }
 @media (min-width: 1200px) { .phone-frame { transform: scale(.92); } }
+.role-choice { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.role-option { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: white; color: var(--navy); text-align: left; transition: border-color .2s, box-shadow .2s; }
+.role-option span { font-size: 26px; }
+.role-option strong { font-size: 14px; }
+.role-option small { color: var(--muted); font-size: 11px; }
+.role-option:hover, .role-option:focus-visible { border-color: var(--red); box-shadow: 0 0 0 3px #f5223814; outline: none; }

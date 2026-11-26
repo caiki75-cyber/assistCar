@@ -20,13 +20,16 @@ function requireEnv(name: string): string {
 
 export const env = {
   DATABASE_URL: requireEnv("DATABASE_URL"),
-  COOKIE_SECRET: requireEnv("COOKIE_SECRET"),
 } as const;
 
 /**
- * Chave secreta lida de process.env (.env.local), usada para assinar o cookie.
+ * Chave secreta lida de process.env, usada para assinar o cookie.
+ *
+ * Ainda não é obrigatória na inicialização, pois nenhum cookie é criado.
+ * Quando a sessão for implementada, valide-a no momento do uso (nunca na
+ * importação, para não quebrar o build do Docker, que não tem os segredos).
  */
-export const secure = process.env.COOKIE_SECRET as string;
+export const secure = process.env.COOKIE_SECRET;
 
 /**
  * Opções do cookie de sessão. httpOnly impede o acesso via JavaScript no navegador.

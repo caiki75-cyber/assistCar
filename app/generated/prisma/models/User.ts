@@ -53,6 +53,7 @@ export type UserCountAggregateOutputType = {
   phone: number
   passwordHash: number
   role: number
+  cadastroVeiculo: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -88,6 +89,7 @@ export type UserCountAggregateInputType = {
   phone?: true
   passwordHash?: true
   role?: true
+  cadastroVeiculo?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -172,6 +174,7 @@ export type UserGroupByOutputType = {
   phone: string
   passwordHash: string
   role: $Enums.Role
+  cadastroVeiculo: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -204,9 +207,11 @@ export type UserWhereInput = {
   phone?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  cadastroVeiculo?: Prisma.JsonNullableFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   worker?: Prisma.XOR<Prisma.WorkerNullableScalarRelationFilter, Prisma.WorkerWhereInput> | null
+  historico?: Prisma.HistoricoListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -216,9 +221,11 @@ export type UserOrderByWithRelationInput = {
   phone?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cadastroVeiculo?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   worker?: Prisma.WorkerOrderByWithRelationInput
+  historico?: Prisma.HistoricoOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -231,9 +238,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   phone?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  cadastroVeiculo?: Prisma.JsonNullableFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   worker?: Prisma.XOR<Prisma.WorkerNullableScalarRelationFilter, Prisma.WorkerWhereInput> | null
+  historico?: Prisma.HistoricoListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -243,6 +252,7 @@ export type UserOrderByWithAggregationInput = {
   phone?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cadastroVeiculo?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -260,6 +270,7 @@ export type UserScalarWhereWithAggregatesInput = {
   phone?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  cadastroVeiculo?: Prisma.JsonNullableWithAggregatesFilter<"User">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -271,9 +282,11 @@ export type UserCreateInput = {
   phone: string
   passwordHash: string
   role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   worker?: Prisma.WorkerCreateNestedOneWithoutUserInput
+  historico?: Prisma.HistoricoCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -283,9 +296,11 @@ export type UserUncheckedCreateInput = {
   phone: string
   passwordHash: string
   role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   worker?: Prisma.WorkerUncheckedCreateNestedOneWithoutUserInput
+  historico?: Prisma.HistoricoUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -295,9 +310,11 @@ export type UserUpdateInput = {
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   worker?: Prisma.WorkerUpdateOneWithoutUserNestedInput
+  historico?: Prisma.HistoricoUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -307,9 +324,11 @@ export type UserUncheckedUpdateInput = {
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   worker?: Prisma.WorkerUncheckedUpdateOneWithoutUserNestedInput
+  historico?: Prisma.HistoricoUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -319,6 +338,7 @@ export type UserCreateManyInput = {
   phone: string
   passwordHash: string
   role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -330,6 +350,7 @@ export type UserUpdateManyMutationInput = {
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -341,6 +362,7 @@ export type UserUncheckedUpdateManyInput = {
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -352,6 +374,7 @@ export type UserCountOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  cadastroVeiculo?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -378,6 +401,11 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
@@ -395,6 +423,22 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutHistoricoInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHistoricoInput, Prisma.UserUncheckedCreateWithoutHistoricoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHistoricoInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutHistoricoNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutHistoricoInput, Prisma.UserUncheckedCreateWithoutHistoricoInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutHistoricoInput
+  upsert?: Prisma.UserUpsertWithoutHistoricoInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutHistoricoInput, Prisma.UserUpdateWithoutHistoricoInput>, Prisma.UserUncheckedUpdateWithoutHistoricoInput>
+}
+
 export type UserCreateNestedOneWithoutWorkerInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutWorkerInput, Prisma.UserUncheckedCreateWithoutWorkerInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkerInput
@@ -409,6 +453,74 @@ export type UserUpdateOneRequiredWithoutWorkerNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkerInput, Prisma.UserUpdateWithoutWorkerInput>, Prisma.UserUncheckedUpdateWithoutWorkerInput>
 }
 
+export type UserCreateWithoutHistoricoInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  passwordHash: string
+  role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  worker?: Prisma.WorkerCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutHistoricoInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  passwordHash: string
+  role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  worker?: Prisma.WorkerUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutHistoricoInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutHistoricoInput, Prisma.UserUncheckedCreateWithoutHistoricoInput>
+}
+
+export type UserUpsertWithoutHistoricoInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutHistoricoInput, Prisma.UserUncheckedUpdateWithoutHistoricoInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutHistoricoInput, Prisma.UserUncheckedCreateWithoutHistoricoInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutHistoricoInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutHistoricoInput, Prisma.UserUncheckedUpdateWithoutHistoricoInput>
+}
+
+export type UserUpdateWithoutHistoricoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  worker?: Prisma.WorkerUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutHistoricoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  worker?: Prisma.WorkerUncheckedUpdateOneWithoutUserNestedInput
+}
+
 export type UserCreateWithoutWorkerInput = {
   id?: string
   name: string
@@ -416,8 +528,10 @@ export type UserCreateWithoutWorkerInput = {
   phone: string
   passwordHash: string
   role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  historico?: Prisma.HistoricoCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWorkerInput = {
@@ -427,8 +541,10 @@ export type UserUncheckedCreateWithoutWorkerInput = {
   phone: string
   passwordHash: string
   role?: $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  historico?: Prisma.HistoricoUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWorkerInput = {
@@ -454,8 +570,10 @@ export type UserUpdateWithoutWorkerInput = {
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  historico?: Prisma.HistoricoUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkerInput = {
@@ -465,10 +583,41 @@ export type UserUncheckedUpdateWithoutWorkerInput = {
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  cadastroVeiculo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  historico?: Prisma.HistoricoUncheckedUpdateManyWithoutUserNestedInput
 }
 
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  historico: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  historico?: boolean | UserCountOutputTypeCountHistoricoArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountHistoricoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HistoricoWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -478,9 +627,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phone?: boolean
   passwordHash?: boolean
   role?: boolean
+  cadastroVeiculo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   worker?: boolean | Prisma.User$workerArgs<ExtArgs>
+  historico?: boolean | Prisma.User$historicoArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -490,6 +642,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   passwordHash?: boolean
   role?: boolean
+  cadastroVeiculo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -501,6 +654,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   passwordHash?: boolean
   role?: boolean
+  cadastroVeiculo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -512,13 +666,16 @@ export type UserSelectScalar = {
   phone?: boolean
   passwordHash?: boolean
   role?: boolean
+  cadastroVeiculo?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "passwordHash" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "passwordHash" | "role" | "cadastroVeiculo" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   worker?: boolean | Prisma.User$workerArgs<ExtArgs>
+  historico?: boolean | Prisma.User$historicoArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -527,6 +684,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     worker: Prisma.$WorkerPayload<ExtArgs> | null
+    historico: Prisma.$HistoricoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -535,6 +693,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     phone: string
     passwordHash: string
     role: $Enums.Role
+    cadastroVeiculo: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -932,6 +1091,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   worker<T extends Prisma.User$workerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workerArgs<ExtArgs>>): Prisma.Prisma__WorkerClient<runtime.Types.Result.GetResult<Prisma.$WorkerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  historico<T extends Prisma.User$historicoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$historicoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HistoricoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -967,6 +1127,7 @@ export interface UserFieldRefs {
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly cadastroVeiculo: Prisma.FieldRef<"User", 'Json'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1378,6 +1539,30 @@ export type User$workerArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.WorkerInclude<ExtArgs> | null
   where?: Prisma.WorkerWhereInput
+}
+
+/**
+ * User.historico
+ */
+export type User$historicoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Historico
+   */
+  select?: Prisma.HistoricoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Historico
+   */
+  omit?: Prisma.HistoricoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HistoricoInclude<ExtArgs> | null
+  where?: Prisma.HistoricoWhereInput
+  orderBy?: Prisma.HistoricoOrderByWithRelationInput | Prisma.HistoricoOrderByWithRelationInput[]
+  cursor?: Prisma.HistoricoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HistoricoScalarFieldEnum | Prisma.HistoricoScalarFieldEnum[]
 }
 
 /**

@@ -10,7 +10,7 @@ import type { User as PrismaUser } from "@/app/generated/prisma/client";
 export type { PrismaUser };
 
 /** Usuário sem campos sensíveis — retornado nas respostas HTTP. */
-export type SafeUser = Omit<PrismaUser, "passwordHash">;
+export type SafeUser = Omit<PrismaUser, "passwordHash" | "cadastroVeiculo">;
 
 /** Dados recebidos pelo repository para criação. */
 export interface CreateUserData {

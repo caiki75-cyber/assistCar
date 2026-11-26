@@ -20,10 +20,17 @@ function createPrismaClient(): InstanceType<typeof PrismaClient> {
 
 const globalForPrisma = globalThis as unknown as {
   prisma: InstanceType<typeof PrismaClient> | undefined;
+  prismaClass: typeof PrismaClient | undefined;
 };
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+// Só reaproveita a instância se ela veio do client atual. Depois de um
+// `prisma generate`, a instância antiga não conhece os models novos.
+export const prisma =
+  globalForPrisma.prismaClass === PrismaClient && globalForPrisma.prisma
+    ? globalForPrisma.prisma
+    : createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
+  globalForPrisma.prismaClass = PrismaClient;
 }

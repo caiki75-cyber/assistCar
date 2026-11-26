@@ -23,6 +23,7 @@ interface ServiceType {
 }
 
 interface LoggedUser {
+  id?: string
   name: string
   email: string
   phone: string
@@ -79,7 +80,7 @@ export default function Page() {
         {veiculos
           ? <Vehicles lista={frota} setLista={setFrota} onHome={goHome} onProfile={goProfile} />
           : servicoSelecionado
-            ? <ConfirmOrder service={servicoSelecionado} frota={frota} onBack={() => setServicoSelecionado(null)} onVehicles={goVehicles} onHome={goHome} onProfile={goProfile} />
+            ? <ConfirmOrder service={servicoSelecionado} userId={user?.id} frota={frota} onBack={() => setServicoSelecionado(null)} onVehicles={goVehicles} onHome={goHome} onProfile={goProfile} />
             : screen === 'home'
               ? <Home onProfile={goProfile} onVehicles={goVehicles} onSelectService={setServicoSelecionado} />
               : <Profile user={user} setUser={updateUser} onHome={goHome} onVehicles={goVehicles} />}
@@ -253,24 +254,50 @@ function Vehicles({ lista, setLista, onHome, onProfile }: {
   )
 }
 
-function ConfirmOrder({ service, frota, onBack, onVehicles, onHome, onProfile }: {
+function ConfirmOrder({ service, userId, frota, onBack, onVehicles, onHome, onProfile }: {
   service: ServiceType
+  userId?: string
   frota: Vehicle[]
   onBack: () => void
   onVehicles: () => void
   onHome: () => void
   onProfile: () => void
 }) {
-  const [veiculoIdx, setVeiculoIdx] = useState(0)
+  const vehicleLabel = (v: Vehicle) => `${v.marca} ${v.modelo} · ${v.placa}`
+  const [veiculo, setVeiculo] = useState(frota[0] ? vehicleLabel(frota[0]) : '')
   const [endereco, setEndereco] = useState('')
   const [solicitado, setSolicitado] = useState(false)
+  const [enviando, setEnviando] = useState(false)
+  const [erro, setErro] = useState('')
 
-  const veiculo = frota[veiculoIdx]
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!veiculo) return
-    setSolicitado(true)
+    if (!veiculo || !endereco.trim()) {
+      setErro('Informe o veículo e o endereço.')
+      return
+    }
+
+    setErro('')
+    setEnviando(true)
+    try {
+      const res = await fetch('/api/historico', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ serviceTypeId: service.id, veiculo, endereco: endereco.trim(), userId }),
+      })
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => null)
+        setErro(json?.error?.message ?? 'Não foi possível registrar o pedido.')
+        return
+      }
+
+      setSolicitado(true)
+    } catch {
+      setErro('Erro de conexão. Tente novamente.')
+    } finally {
+      setEnviando(false)
+    }
   }
 
   return (
@@ -296,9 +323,9 @@ function ConfirmOrder({ service, frota, onBack, onVehicles, onHome, onProfile }:
               <button type="button" onClick={onVehicles}>Cadastrar veículo</button>
             </div>
           ) : (
-            <select id="veiculo" className="empty-field" value={veiculoIdx} onChange={(e) => setVeiculoIdx(Number(e.target.value))}>
+            <select id="veiculo" name="veiculo" className="empty-field" value={veiculo} onChange={(e) => setVeiculo(e.target.value)}>
               {frota.map((v, i) => (
-                <option key={i} value={i}>{v.marca} {v.modelo} · {v.placa}</option>
+                <option key={i} value={vehicleLabel(v)}>{vehicleLabel(v)}</option>
               ))}
             </select>
           )}
@@ -306,7 +333,9 @@ function ConfirmOrder({ service, frota, onBack, onVehicles, onHome, onProfile }:
           <label htmlFor="endereco">Endereço / localização</label>
           <input id="endereco" name="endereco" type="text" placeholder="Rua, número, bairro" required value={endereco} onChange={(e) => setEndereco(e.target.value)} />
 
-          <button className="primary-button login-button" type="submit" disabled={frota.length === 0}>Solicitar {service.name}</button>
+          {erro && <div className="login-feedback error"><span>✕</span><p>{erro}</p></div>}
+
+          <button className="primary-button login-button" type="submit" disabled={frota.length === 0 || enviando}>{enviando ? 'Enviando…' : `Solicitar ${service.name}`}</button>
         </form>
       )}
       <Nav active="home" onHome={onHome} onProfile={onProfile} onVehicles={onVehicles} />
